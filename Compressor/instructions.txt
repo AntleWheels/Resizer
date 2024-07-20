@@ -1,0 +1,15 @@
+Just Few Simple steps
+Go inside the directory
+command : cd Compressor 
+
+create the virtual environment 
+command : python -m venv venv
+
+Activate the virtual environment
+command : venv\Scripts\activate
+
+then Install the files in the requirements file
+command 
+
+Then run the Program using 
+Command :python compressor.python
