@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Processing</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #a7c9b9, 	#FFE5B4); 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 2rem;
+            margin: 0;
+            animation: fadeIn 1s ease-in-out;
+        }
+        .container {
+            background: #E6E6FA; 
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 800px;
+            width: 100%;
+            animation: slideIn 1s ease-in-out;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .container:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+        .container h1 {
+            margin-bottom: 1rem;
+            font-size: 2rem;
+            color: #333;
+            font-weight: bold;
+            animation: fadeInDown 1s ease-in-out;
+        }
+        .form-section {
+            margin-bottom: 2rem;
+            display: none;
+            animation: expand 0.5s ease-in-out;
+        }
+        .form-section.active {
+            display: block;
+        }
+        .form-section input, .form-section button, .form-section select {
+            display: block;
+            margin: 1rem auto;
+            animation: fadeInUp 0.5s ease-in-out;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .form-section input[type="number"] {
+            width: calc(50% - 2rem);
+            margin-right: 1rem;
+        }
+        .form-section button {
+            background: linear-gradient(135deg, #ff7e5f, #feb47b);
+            color: #fff;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .form-section button:hover {
+            background: linear-gradient(135deg, #feb47b, #ff7e5f);
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+        .form-section select {
+            padding: 0.5rem;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+        }
+        .form-section select:hover {
+            border-color: #ff7e5f;
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+        .preview-image {
+            margin: 2rem auto;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            max-width: 100%;
+            max-height: 400px;
+            animation: fadeInUp 0.5s ease-in-out;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .preview-image:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideIn {
+            from { transform: translateY(-50px); }
+            to { transform: translateY(0); }
+        }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes expand {
+            from { max-height: 0; opacity: 0; }
+            to { max-height: 100%; opacity: 1; }
+        }
+    </style>
+    <script>
+        function toggleForm() {
+            const selection = document.getElementById("action-select").value;
+            const resizeSection = document.getElementById("resize-section");
+            const compressSection = document.getElementById("compress-section");
+            const previewImage = document.querySelector(".preview-image");
+
+            resizeSection.classList.remove("active");
+            compressSection.classList.remove("active");
+            previewImage.style.display = "none";
+
+            if (selection === "resize") {
+                resizeSection.classList.add("active");
+            } else if (selection === "compress") {
+                compressSection.classList.add("active");
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            console.log('Document is ready');
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 style="font-family: cursive;">Image Compressor and Resizer</h1>
+        <img src="static/image.png" alt="Preview" class="preview-image">
+        <p style="font-family: cursive;">Upload an image and choose to either resize or compress it.</p>
+        <p style="font-family: cursive;">"FEEL FREE"There is no DataBase to save your data</p>
+
+        <div class="form-section active">
+            <select id="action-select" onchange="toggleForm()">
+                <option value="" disabled selected>Select an action</option>
+                <option value="resize" style="font-family: cursive;">Resize</option>
+                <option value="compress" style="font-family: cursive;">Compress</option>
+            </select>
+        </div>
+        
+        <div id="resize-section" class="form-section">
+            <h2 style="font-family: cursive;">Resize Image</h2>
+            <form action="/resize" method="post" enctype="multipart/form-data">
+                <input type="file" name="image" accept="image/*" required>
+                <input type="number" name="width" placeholder="Width (px)" required>
+                <input type="number" name="height" placeholder="Height (px)" required>
+                <button type="submit" style="font-family: cursive;">Resize Image</button>
+            </form>
+        </div>
+        
+        <div id="compress-section" class="form-section">
+            <h2 style="font-family: cursive;">Compress Image</h2>      
+            <p style="font-family: cursive;">For Compression it is preffered to resize the photo for better results</p>
+
+            <form action="/compress" method="post" enctype="multipart/form-data">
+                <input type="file" name="image" accept="image/*" required>
+                <input type="number" name="size" placeholder="Target Size" step="0.1" required>
+                <select name="unit" required>
+                    <option value="KB" style="font-family: cursive;">KB</option>
+                    <option value="MB" style="font-family: cursive;">MB</option>
+                </select>
+                <button type="submit" style="font-family: cursive;">Compress Image</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
